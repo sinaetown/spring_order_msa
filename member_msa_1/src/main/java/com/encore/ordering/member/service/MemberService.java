@@ -63,4 +63,13 @@ public class MemberService {
         return members.stream().map(m -> MemberResponseDto.toMemberResponseDto(m)).collect(Collectors.toList());
     }
 
+    public MemberResponseDto findById(Long id){
+        Member member = memberRepository.findById(id) .orElseThrow(() -> new EntityNotFoundException("일치하는 ID의 회원이 없어요!"));
+        return toMemberResponseDto(member);
+    }
+
+    public MemberResponseDto findByEmail(String email) {
+        Member member = memberRepository.findByEmail(email) .orElseThrow(() -> new EntityNotFoundException("일치하는 이메일의 회원이 없어요!"));
+        return toMemberResponseDto(member);
+    }
 }

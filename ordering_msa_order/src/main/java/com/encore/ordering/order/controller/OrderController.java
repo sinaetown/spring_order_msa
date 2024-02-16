@@ -20,10 +20,11 @@ public class OrderController {
     }
 
     @PostMapping("/order/create")
-    public ResponseEntity<CommonResponse> orderCreate(@RequestBody List<OrderReqDto> orderReqDtos) {
-        Ordering ordering = orderService.create(orderReqDtos);
+    public ResponseEntity<CommonResponse> orderCreate(@RequestBody List<OrderReqDto> orderReqDtos,
+                                                      @RequestHeader("myEmail") String email) {
+        Ordering ordering = orderService.create(orderReqDtos, email);
         return new ResponseEntity<>(new CommonResponse(HttpStatus.CREATED,
-                "Item successfully created!", ordering.getId()), HttpStatus.CREATED);
+                "Order successfully created!", ordering.getId()), HttpStatus.CREATED);
     }
 
 //    @DeleteMapping("/order/{id}/canceled")
@@ -33,9 +34,9 @@ public class OrderController {
 //                "Item successfully canceled!", ordering.getId()), HttpStatus.CREATED);
 //    }
 
-    @GetMapping("/orders")
-    public List<OrderResDto> orders() {
-        return orderService.findAll();
-    }
+//    @GetMapping("/orders")
+//    public List<OrderResDto> orders() {
+//        return orderService.findAll();
+//    }
 
 }

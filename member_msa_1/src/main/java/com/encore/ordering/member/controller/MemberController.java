@@ -47,10 +47,19 @@ public class MemberController {
 //    @PreAuthorize("hasRole('ADMIN') or #email == authentication.principal.username")
 //   => 다수에게 권한 부여할 수도 있다!
 
-//    @GetMapping("/member/myorders")
+    //    @GetMapping("/member/myorders")
 //    public List<OrderResDto> myOrders() {
 //        return orderService.findMyOrders();
 //    }
+    @GetMapping("/member/{id}") //Authentication 객체에서 바로 회원 관련 정보를 빼내겠다는
+    public MemberResponseDto findById(@PathVariable Long id) {
+        return memberService.findById(id);
+    }
+
+    @GetMapping("/member/findByEmail") //Authentication 객체에서 바로 회원 관련 정보를 빼내겠다는
+    public MemberResponseDto findByEmail(@RequestParam String email) {
+        return memberService.findByEmail(email);
+    }
 
     @GetMapping("/member/myInfo") //Authentication 객체에서 바로 회원 관련 정보를 빼내겠다는
     public MemberResponseDto findMyInfo(@RequestHeader("myEmail") String email) {

@@ -28,6 +28,12 @@ spring:
           #          lb://[Eureka에 등록된 서비스명]
           #         아래 코드 대신, http://localhost:8081로 선언하면 로드밸런싱이 아닌, 8081로 직접 연결
           uri: lb://member-service
+        - id: order-service
+          predicates:
+            - Path=/order-service/**
+          filters:
+            - StripPrefix=1
+          uri: lb://order-service
 
 eureka:
   client:

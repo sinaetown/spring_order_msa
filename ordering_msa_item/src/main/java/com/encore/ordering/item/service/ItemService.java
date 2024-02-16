@@ -4,6 +4,7 @@ import com.encore.ordering.item.domain.Item;
 import com.encore.ordering.item.dto.ItemReqDto;
 import com.encore.ordering.item.dto.ItemResDto;
 import com.encore.ordering.item.dto.ItemSearchDto;
+import com.encore.ordering.item.dto.ItemUpdateQuantityDto;
 import com.encore.ordering.item.repository.ItemRepository;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.Resource;
@@ -36,6 +37,18 @@ public class ItemService {
 
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
+    }
+
+    public ItemResDto findById(Long id) {
+        Item item = itemRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Item cannot be found."));
+        return ItemResDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .category(item.getCategory())
+                .price(item.getPrice())
+                .stockQuantity(item.getStockQuantity())
+                .build();
     }
 
     public Item create(ItemReqDto itemReqDto) {
@@ -136,5 +149,12 @@ public class ItemService {
                 .imagePath(i.getImagePath())
                 .build()).collect(Collectors.toList());
         return itemResDtos;
+    }
+
+    public void updateQuantity(List<ItemUpdateQuantityDto> itemUpdateQuantityDtos) {
+        for (ItemUpdateQuantityDto i : itemUpdateQuantityDtos) {
+            Item item = itemRepository.findById(i.getId()).orElseThrow(EntityNotFoundException::new);
+            item.updateStockQuantity(i.getStockQuantity());
+        }
     }
 }
